@@ -20,9 +20,7 @@ import java.util.List;
  *
  * @author Xiaoyue Lei
  */
-public class StorageManager {
-    private static final int BATCH_CNT = 10;
-    
+public class StorageManager {    
     static StorageManager sm = null;
     static List<Record> records;
     public static StorageManager getIntance() {
@@ -35,17 +33,13 @@ public class StorageManager {
     
     public void save(List<Record> rs) {
         records.addAll(rs);
-        if (records.size() > BATCH_CNT) {
-            saveToFile(records);
-            records.clear();
-        }
     }
     
-    private void saveToFile(List<Record> beans) {
+    public void saveToFile(String name) {
         try {
-            Writer writer = new FileWriter("d:\\Atom\\Dependency\\test1.csv");
+            Writer writer = new FileWriter("d:\\Atom\\Dependency\\" + name + ".csv");
             StatefulBeanToCsv beanToCsv = new StatefulBeanToCsvBuilder(writer).build();
-            beanToCsv.write(beans);
+            beanToCsv.write(records);
             writer.close();
         } catch (IOException|CsvRequiredFieldEmptyException|CsvDataTypeMismatchException ex) {
             ex.printStackTrace();
